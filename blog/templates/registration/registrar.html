@@ -1,16 +1,17 @@
-{% extends "bases.html" %}
+{% extends "base.html" %}
 
 {% load static %}
 
-<title>{% block title %}Login de Usuario{% endblock %}</title>
+<title>{% block title %}Registro de Usuario{% endblock %}</title>
 
 {% block contenido %}
 <center>
 
   <form method="POST", enctype="multipart/form-data" style="margin-top: 300px; margin-bottom: 100px;">
-        <h1 class="h1">Iniciar Sesión</h1>
-        <br>
+    <h1>Registro de Usuario</h1>
+    <br>
         <div class="messages">
+        
             {% for message in messages %}
                 <table {% if message.tags %} class="{{ message.tags }}"{% endif %}> 
                     {{ message }}
@@ -18,16 +19,16 @@
             {% endfor %}
         </div>
         <br>
-            {% csrf_token %}
+        {% csrf_token %}
         <div class="container-fluid">
             <table>
                 {{ form }}
             </table>
-            <br>
-            <a style="color: black;"  href="{% url 'apps.usuario.registrar' %}">¿No tienes una cuenta? Regístrate aquí</a>
-            <br><br>
-            <button type="submit" class="btn btn-success btn-lg px-3">Iniciar Sesión</button>
         </div>
+        <br><br>
+        
+    <button type="submit" class="btn btn-success btn-lg px-3">Registrar</button>
+
   </form>
 </center>
 {% endblock %}
