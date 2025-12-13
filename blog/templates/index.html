@@ -1,13 +1,86 @@
-{% extends 'base.html' %}   
+{% extends 'base.html' %}
 
-{% block contenido %}
-    <div class="container mt-5">
-        <div class="jumbotron">
-            <h1 class="display-4">Bienvenidos a nuestro Blog!</h1>
-            <p class="lead">Este es un espacio donde compartimos nuestras ideas y pensamientos.</p>
-            <hr class="my-4">
-            <p>Explora nuestras últimas publicaciones y mantente al día con las novedades.</p>
-            
+{% load static %}
+
+{% block section %}
+
+<div class="container" data-aos="fade-up" data-aos-delay="100">
+
+  <h1>Bienvenido {{ user.username }}</h1>
+  
+</div>
+
+<!-- Slider Section -->
+<section id="slider" class="slider section dark-background">
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="swiper init-swiper">
+
+      <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "centeredSlides": true,
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              },
+              "navigation": {
+                "nextEl": ".swiper-button-next",
+                "prevEl": ".swiper-button-prev"
+              }
+            }
+          </script>
+
+      <div class="swiper-wrapper">
+
+        <div class="swiper-slide" style="background-image: url('{% static 'assets/img/post-slide-1.jpg' %}');">
+          <div class="content">
+            <h2><a href="single-post.html">Objetivo de este Blog</a></h2>
+            <p>Este proyecto nos permite poner a prueba todo el conocimiento aprendido a lo largo de la cursada de la Etapa 2 del Informatorio.</p>
+          </div>
         </div>
+
+        <div class="swiper-slide" style="background-image: url('{% static 'assets/img/post-slide-2.jpg' %}');">
+          <div class="content">
+            <h2><a href="single-post.html">Puntos a tener en cuenta</a></h2>
+            <p>Para el desarrollo del blog, se conformaron equipos de personas completamente desconocidas, lo cual implico un desafio
+              mayor al momento de plasmar una idea concreta.</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide" style="background-image: url('{% static 'assets/img/post-slide-3.jpg' %}');">
+          <div class="content">
+            <h2><a href="single-post.html">Temas desarrollados</a></h2>
+            <p>Se inicio con lenguaje Python desde cero, configuracion y armado de tablas en base de datos relacionales y por último la integración
+              con un framework como Django para la creación del Proyecto Final.</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide" style="background-image: url('{% static 'assets/img/post-slide-4.jpg' %}');">
+          <div class="content">
+            <h2><a href="single-post.html">Conclusiones finales</a></h2>
+            <p>El proyecto no solo implico el estudio del lenguaje, configuraciones, lógica de programación, estructuras de base de datos, 
+              sino también el ponerse de acuerdo entre pares y crear juntos algo que para muchos es su primer paso en la programación.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+
+      <div class="swiper-pagination"></div>
     </div>
-{%endblock%}
+
+  </div>
+
+</section><!-- /Slider Section -->
+
+
+{% endblock section %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="container mt-5">
+
+    <h2>Crear nuevo Post</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label>Título:</label>
+        <input type="text" name="titulo" class="form-control" required>
+
+        <label>Subtítulo:</label>
+        <input type="text" name="subtitulo" class="form-control">
+
+        <label>Texto:</label>
+        <textarea name="texto" class="form-control" required></textarea>
+
+        <label>Categoría:</label>
+        <select name="categoria" class="form-control">
+            <option value="">Sin categoría</option>
+            {% for cat in categorias %}
+                <option value="{{ cat.id }}">{{ cat.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Imagen:</label>
+        <input type="file" name="imagen" class="form-control">
+
+        <button class="btn btn-primary mt-3" type="submit">
+            Crear Post
+        </button>
+    </form>
+
+</div>
+{% endblock contenido %}

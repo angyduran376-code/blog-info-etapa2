@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="container mt-5">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h2>Todos los Posts</h2>
+    <a href="{% url 'apps.posts:crear_post' %}" class="btn btn-primary mb-3">Crear nuevo Post</a>
+
+    {% for p in posts %}
+        <div class="card mb-3 p-3">
+            <h3>{{ p.titulo }}</h3>
+            <p>{{ p.subtitulo }}</p>
+            <p><strong>Categoría:</strong> {{ p.categoria|default:"Sin categoría" }}</p>
+            <a href="{% url 'apps.posts:post_individual' p.id %}" class="btn btn-sm btn-info">Ver</a>
+        </div>
+
+    {% empty %}
+        <h4>No hay posts todavía.</h4>
+    {% endfor %}
+
+</div>
+{% endblock %}

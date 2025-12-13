@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title> {% block title %} Login de usuario{% endblock title %}
+
+{% block contenido %}
+<center>
+    <form method="POST" style="margin-top: 300px;">
+        <h1 class = "h1"> Iniciar Sesiòn</h1>
+        <br>
+        <div class = "messages">
+            {% for message in messages %}
+                <table{% if message.taf%} class="{{message.tags}}"{% endif %}>{{ message}}</table>
+            {% endfor %}
+        </div>
+        <br>
+        {% csrf_token %}
+        <div class = "conteiner">
+            <table>{{ form }}</table>
+            <br>
+            <a style = "color: black;"  href = "{% url 'apps.usuario:registrar' %}">Todavia no esta registardo? Registrate</a>
+            <br><br>
+            <button type = "submit" class = "btn btn=-success btn-lg px-3">Iniciar Sesion</button>
+        </div>
+    </form>
+    
+</center>
+
+{% endblock contenido %}

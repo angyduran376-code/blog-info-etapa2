@@ -1,23 +1,34 @@
-{% extends 'base.html' %}   
-
-{% load static %}
+{% extends 'base.html' %}
 
 {% block contenido %}
-<div class ="container-fluid" style="margin: 200px;">
-    {% for i in posts %}
+<div class = "container-fluid" style="margin: 200px;">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% for i in posts  %}
         <br>
-        <li>{{ i.titulo }}</li>
-        <li>{{ i.subtitulo }}</li>
-        <li>{{ i.categoria}}</li>
+        <li>{{i.titulo}}</li>
+        <li>{{i.subtitulo}}</li>
+        <li>{{i.categoria}}</li>
         <br>
-        <a id="boton_post" href="{% url 'apps.posts:post_individual' i.id %}"> 
-            Ingresar al post_individual  
+        <a id="boton_post" href="{% url 'apps.posts:post_individual' i.id %}">
+            Ingresa a este Posts
         </a>
-        {% empty %}
-        <li>No hay posts disponibles.</li>
+        <br>
+        {%empty%}
+        <h1> Estamos perdidos no hay nada </h1>
 
     {% endfor %}
+        
+    <a class="btn btn-primary" href="{% url 'apps.posts:post_crear' %}">
+        Crear nuevo post
+    </a>
     
 </div>
+{% endblock contenido %}
 
-{%endblock%}
