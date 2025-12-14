@@ -10,5 +10,7 @@ urlpatterns = [
     path('posts/categorias/', CategoriaCreateView.as_view(), name='crear_categoria'),
     path('posts/categorias/listar/', CategoriaListView.as_view(), name='categoria_list'),
     path('posts/categorias/eliminar/<int:pk>/', CategoriaDeleteView.as_view(), name='categoria_delete'),
+    path('posts/<int:pk>/modificar/', PostUpdateView.as_view(), name='post_update'),
+    path('posts/<int:pk>/eliminar/', PostDeleteView.as_view(), name='post_delete'),
 
 ]

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<div class="container" style="margin: 200px;">
+    <h2>¿Eliminar post?</h2>
+
+    <p>Estás por eliminar:</p>
+    <strong>{{ object.titulo }}</strong>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        <a href="{% url 'apps.posts:posts' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
