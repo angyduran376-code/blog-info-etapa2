@@ -26,38 +26,11 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
-    path('about', about, name='about'),
-    path('posts/', include('apps.posts.urls')),
-    path('contacto/', include('apps.contacto.urls')),
-    path('usuario/', include('apps.usuario.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('', about, name='about'),
+    path('/', include('apps.posts.urls')),
+    path('/', include('apps.contacto.urls')),
+    path('/', include('apps.usuario.urls')),
+    path('/', include('django.contrib.auth.urls')),
 ]+static(settings.STATIC_URL, doument_root=settings.STATIC_ROOT)
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-################################################################################
-"""
-from django.contrib import admin
-from django.urls import path, include
-from .views import index
-from django.conf import settings
-from django.conf.urls.static import static
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', index, name='index'),
-
-    # Prefijos para cada app
-    path('posts/', include('apps.posts.urls')),
-    path('contacto/', include('apps.contacto.urls')),
-    path('usuario/', include('apps.usuario.urls')),
-
-    # Autenticación built-in de Django
-    path('accounts/', include('django.contrib.auth.urls')),
-]
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += staticfiles_urlpatterns()
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-"""
