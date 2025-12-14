@@ -1,6 +1,6 @@
 from .forms import RegistroUsuarioForm
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, DeleteView
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
@@ -72,26 +72,35 @@ class UsuarioDetailView(LoginRequiredMixin, DetailView):
         if eliminar_post:
             Post.objects.filter(autor=self.object).delete()
             messages.success(request, f'Usuario {self.object.username} y sus posts eliminados exitosamente.')
-        return 
+        return redirect('apps.usuario:usuario_list')
     
-    class UsuarioDeleteView(LoginRequiredMixin, DetailView):
-        model = Usuario
-        template_name = 'usuario/eliminar_usuario.html'
-        success_url = reverse_lazy('apps.usuario:usuario_list')
+class UsuarioDeleteView(LoginRequiredMixin, DeleteView):
+    model = Usuario
+    template_name = 'usuario/eliminar_usuario.html'
+    success_url = reverse_lazy('apps.usuario:usuario_list')
 
-        def get_context_data(self, **kwargs):
-            context = super().get_context_data(**kwargs)
-            colaborador_group= Group.objects.get(name='Colaborador')
-            es_colaborador= colaborador_group in self.object.groups.all()
-            context['es_colaborador']= es_colaborador
-            return context
-            
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        colaborador_group = Group.objects.get(name='Colaborador')
+        context['es_colaborador'] = colaborador_group in self.object.groups.all()
+        return context
 
-        def post(self, request, *args, **kwargs):
-            eliminar_comentarios= request.POST.get('eliminar_comentario',False)
-            eliminar_post= request.POST.get('eliminar_post',False)
-            self.object= self.get_object()
-            if eliminar_comentarios:
-                Comentario.objects.filter(usuario=self.object).delete()            
-            messages.success(request, f'Usuario {self.object.username} eliminado exitosamente.')
-            return self.delete(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        eliminar_comentarios = request.POST.get('eliminar_comentario')
+        eliminar_post = request.POST.get('eliminar_post')
+        
+        if eliminar_comentarios:
+            Comentario.objects.filter(usuario=self.object).delete()
+        
+        if eliminar_post:
+            Post.objects.filter(autor=self.object).delete()
+        
+        self.object.delete()
+        
+        messages.success(
+            request,
+            f'Usuario {self.object.username} y sus datos eliminados exitosamente.'
+        )
+
+        return redirect(self.success_url)

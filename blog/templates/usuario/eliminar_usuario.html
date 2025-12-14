@@ -7,15 +7,15 @@
     {% if user.is_superuser or request.user|has_group:"Colaborador" %}
     <div class="container-fluid" style="margin:400px;">
         <h1>Eliminar Usuario</h1><br>
-        <p>¿Estás seguro de que deseas eliminar tu cuenta?</p>
-        <form method="post">
+        <p>¿Estás seguro de que deseas eliminar usuario?</p>
+        <form method="POST">
             {% csrf_token %}
             <label for="eliminar_comentarios">¿Deseas eliminar comentarios del Usuario?</label>
             <input type="checkbox" id="eliminar_comentarios" name="eliminar_comentario">
             <br><br>
             {% if es_colaborador %}
-                <label for="eliminar_posts">¿Deseas eliminar los posts del Usuario?</label>
-                <input type="checkbox" id="eliminar_posts" name="eliminar_posts">
+                <label for="eliminar_post">¿Deseas eliminar los posts del Usuario?</label>
+                <input type="checkbox" id="eliminar_post" name="eliminar_post">
                 <br><br>
             {% endif %}
 
@@ -28,6 +28,6 @@
         <div class="container-fluid" style="margin:300px;">
             <h1>Solo los usuarios con permiso pueden acceder a esta página</h1>
         </div>
-    {% endif %}%}
+    {% endif %}
 </center>
 {%endblock contenido%}
