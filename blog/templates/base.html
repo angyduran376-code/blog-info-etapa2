@@ -1,4 +1,6 @@
 {% load static %}
+{% load colaborador_tags %}
+
 <!doctype html>
 <html lang="es-ar">
 
@@ -37,7 +39,22 @@
                         <li><a href ="{% url 'apps.posts:posts' %}"> Posts </a></li>
                         <li><a href ="{% url 'apps.contacto:contacto' %}"> Contacto </a></li>
                         {%if user.is_authenticated %}
-                        <li><a href ="{% url 'apps.usuario:logout' %}"> Logout </a></li>
+                        <li><a href ="{% url 'apps.usuario:logout' %}"> {{user.username}}: Logout </a></li>
+                        <div class="dropdown-content">
+                            <table>
+                                <tr>
+                                    {%if user.is_superuser or request.user|has_group:"colaborador"%}
+                                    <td><a href="{% url 'apps.usuario:usuario_list' %}">Lista de usuarios</a></td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td><a href="#">Lista de Categorías</a></td> 
+                                </tr>
+                                <tr>
+                                    <td><a href="#">Lista de Posts</a></td> 
+                                </tr>
+
+                        </div>
                         {% else %}              
                         <li><a href ="{% url 'apps.usuario:login' %}"> Login </a></li>
                         {% endif %}
