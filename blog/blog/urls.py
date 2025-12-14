@@ -25,12 +25,12 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='index'),
-    path('', about, name='about'),
-    path('/', include('apps.posts.urls')),
-    path('/', include('apps.contacto.urls')),
-    path('/', include('apps.usuario.urls')),
-    path('/', include('django.contrib.auth.urls')),
+    path('inicio', index, name='index'),
+    path('about', about, name='about'),
+    path('', include('apps.posts.urls')),
+    path('', include('apps.contacto.urls')),
+    path('', include('apps.usuario.urls')),
+    path('', include('django.contrib.auth.urls')),
 ]+static(settings.STATIC_URL, doument_root=settings.STATIC_ROOT)
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

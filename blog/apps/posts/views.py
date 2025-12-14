@@ -1,16 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post, Comentario, Categoria
-from django.views.generic import ListView, DetailView, CreateView
-from .forms import ComentarioForm
-from django.shortcuts import redirect
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from .forms import ComentarioForm, CrearPostForm, NuevaCategoriaForm
+from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
+from django.urls import reverse_lazy
 
 # Create your views here.
 
-#Vista basada en Funciones
+def posts(request):
+    posts = Post.objects.all()
+    return render(request, 'posts.html', {'posts': posts})
 
-#Vista basada en Clases
 class PostListViews(ListView):
     model = Post
     template_name = "posts/posts.html"
@@ -52,34 +53,85 @@ class ComentarioCreateView(LoginRequiredMixin, CreateView):
         form.instance.posts_id = self.kwargs['posts_id']
         return super().form_valid(form)
 
-def post_crear(request):
-    if request.method == "POST":
-        titulo = request.POST.get("titulo")
-        subtitulo = request.POST.get("subtitulo")
-        texto = request.POST.get("texto")
-        categoria_id = request.POST.get("categoria")
-        imagen = request.FILES.get("imagen")  # importante para ImageField
+# def post_crear(request):
+#     if request.method == "POST":
+#         titulo = request.POST.get("titulo")
+#         subtitulo = request.POST.get("subtitulo")
+#         texto = request.POST.get("texto")
+#         categoria_id = request.POST.get("categoria")
+#         imagen = request.FILES.get("imagen")  # importante para ImageField
 
-        categoria = Categoria.objects.get(id=categoria_id) if categoria_id else None
+#         categoria = Categoria.objects.get(id=categoria_id) if categoria_id else None
 
-        Post.objects.create(
-            titulo=titulo,
-            subtitulo=subtitulo,
-            texto=texto,
-            categoria=categoria,
-            imagen=imagen
-        )
+#         Post.objects.create(
+#             titulo=titulo,
+#             subtitulo=subtitulo,
+#             texto=texto,
+#             categoria=categoria,
+#             imagen=imagen
+#         )
 
-        # Mensaje de éxito
-        messages.success(request, "¡Post creado con éxito!")
+#         # Mensaje de éxito
+#         messages.success(request, "¡Post creado con éxito!")
 
-        # Redirige a la vista que muestra todos los posts
-        return redirect('apps.posts:posts')
+#         # Redirige a la vista que muestra todos los posts
+#         return redirect('apps.posts:posts')
 
-    categorias = Categoria.objects.all()
-    return render(request, "posts/crear_post.html", {"categorias": categorias})
+#     categorias = Categoria.objects.all()
+#     return render(request, "posts/crear_post.html", {"categorias": categorias})
 
-def lista_posts(request):
+# def lista_posts(request):
 
-    posts = Post.objects.all().order_by('-publicado')
-    return render(request, 'posts/lista_posts.html', {'posts': posts})
+    # posts = Post.objects.all().order_by('-publicado')
+    # return render(request, 'posts/lista_posts.html', {'posts': posts})
+
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = CrearPostForm
+    template_name = 'posts/crear_post.html'
+    success_url = reverse_lazy('apps.posts:posts')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categorias'] = Categoria.objects.all()
+        return context
+
+    
+
+class CategoriaCreateView(LoginRequiredMixin, CreateView):
+
+    model = Categoria
+    form_class = NuevaCategoriaForm
+    template_name = 'posts/crear_categoria.html'
+    
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+        else:
+            return reverse_lazy('apps.posts:crear_post')
+
+class CategoriaListView(ListView):
+    model = Categoria
+    template_name = 'posts/categoria_list.html'
+    context_object_name = 'categorias'
+
+class CategoriaDeleteView(LoginRequiredMixin, DeleteView):
+    model = Categoria
+    template_name = 'posts/categoria_confirm_delete.html'
+    success_url = reverse_lazy('apps.posts:categoria_list')
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = CrearPostForm
+    template_name = 'posts/modificar_post.html'
+    success_url = reverse_lazy('apps.posts:posts')
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'posts/eliminar_post.html'
+    success_url = reverse_lazy('apps.posts:posts')
+
+
