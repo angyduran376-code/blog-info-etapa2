@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load colaborador_tags %}
 
 {% block contenido %}
 
 <center>
-    <div class = "container-fluid" styke="margin:200px;">
+    <div class = "container-fluid" style="margin:200px;">
         <br>
         <li>{{ posts.titulo}}</li>
         <li>{{ posts.subtitulo}}</li>
@@ -12,21 +13,32 @@
         <br>
         <li>{{ posts.texto}}</li>
         <br>
-        <img src=" {{ posts.imagen.url }}" alt="">
+        {% if posts.imagen %}
+        <img src="{{ posts.imagen.url }}" alt=" ">
+        {% else %}
+        <p>No hay imagen</p>
+        {% endif %}
     </div>
 </center>
+
 <center>
-    <div class = "container-fluid" styke="margin-bottom: 20px;">
+    <div class = "container-fluid" style="margin-bottom: 20px;">
         <h4>Comentarios</h4>
         <br><br>
     </div>
-    <div class = "container-fluid" styke="margin-bottom: 20px;">
+    <div class = "container-fluid" style="margin-bottom: 20px;">
         {% for comentario in comentarios  %}
             <table>{{comentario.usuario}}-{{comentario.fecha}}</table>
                 <ul class ="w-100 list-unstyled d-flex justify-content-between mb-0">
                     <center>
                         <p>{{comentario.texto}}</p>
                         <br><br>
+                        {%if user.is_superuser or comentario.usuario == user %}
+                        <br><a id="boton_post" href="{% url 'apps.posts:comentario_editar' pk=comentario.pk %}?next={{request.path}}"> Editar Comentario </a>
+                        {% endif %}
+                        {%if user.is_superuser or comentario.usuario == user or request.user|has_group:"Colaborador" %}
+                            <br><a id="boton_post" href="{% url 'apps.posts:comentario_eliminar' pk=comentario.pk %}"> Eliminar Comentario </a>
+                        {% endif %}
                     </center>
                 </ul>
         {%empty%}           
@@ -34,7 +46,7 @@
         {% endfor %}
     </div>
     <a id="comentario"></a>
-    <div class = "container-fluid" styke="margin-bottom: 100px;">
+    <div class = "container-fluid" style="margin-bottom: 100px;">
         <form method="POST" style = "margin-bottom: 100px; margin-top: 100px;">
                 {% csrf_token %}
                 {% if user.is_authenticated %}
@@ -44,6 +56,20 @@
                     {{form.as_p}}
                     <input type="submit" value= "Comentar">
                 </form>
+
+                {%if user.isuperuser or request.user|has_group:'colaborador'%}
+                    <div class="container-fluid d-flex justify-content-center gap-3" style="margin-top: 300px;">
+                        <a id="boton_post" class="btn btn-warning"
+                        href="{% url 'apps.posts:post_update' pk=posts.id %}">
+                            Modificar Post
+                        </a>
+
+                        <a id="boton_post" class="btn btn-danger"
+                        href="{% url 'apps.posts:post_delete' pk=posts.pk %}">
+                            Eliminar Post
+                        </a>
+                    </div>
+                {% endif %}
                 {% else %}
                 <h2> Debes iniciar sesion o registrarte para comentar</h2>
                 <a class="btn btn-success btn-lg" href="{% url 'apps.usuario:login' %}?next={{request.path}}#comentario"> Iniciar Sesiòn</a>

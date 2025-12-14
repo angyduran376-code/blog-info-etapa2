@@ -15,4 +15,7 @@ urlpatterns = [
     path('posts/categorias/eliminar/<int:pk>/', CategoriaDeleteView.as_view(), name='categoria_delete'),
     path('posts/<int:pk>/modificar/', PostUpdateView.as_view(), name='post_update'),
     path('posts/<int:pk>/eliminar/', PostDeleteView.as_view(), name='post_delete'),
+    path('comentario/<int:pk>/editar/', CometarioUpdateView.as_view(), name='comentario_editar'),
+    path('comentario/<int:pk>/eliminar/', ComentarioDeleteView.as_view(), name='comentario_eliminar'),
+    path('categoria/<int:pk>/posts/', PostPorCategoriaListView.as_view(), name='post_por_categoria'),
 ]

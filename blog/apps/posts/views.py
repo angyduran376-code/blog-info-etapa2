@@ -53,37 +53,6 @@ class ComentarioCreateView(LoginRequiredMixin, CreateView):
         form.instance.posts_id = self.kwargs['posts_id']
         return super().form_valid(form)
 
-# def post_crear(request):
-#     if request.method == "POST":
-#         titulo = request.POST.get("titulo")
-#         subtitulo = request.POST.get("subtitulo")
-#         texto = request.POST.get("texto")
-#         categoria_id = request.POST.get("categoria")
-#         imagen = request.FILES.get("imagen")  # importante para ImageField
-
-#         categoria = Categoria.objects.get(id=categoria_id) if categoria_id else None
-
-#         Post.objects.create(
-#             titulo=titulo,
-#             subtitulo=subtitulo,
-#             texto=texto,
-#             categoria=categoria,
-#             imagen=imagen
-#         )
-
-#         # Mensaje de éxito
-#         messages.success(request, "¡Post creado con éxito!")
-
-#         # Redirige a la vista que muestra todos los posts
-#         return redirect('apps.posts:posts')
-
-#     categorias = Categoria.objects.all()
-#     return render(request, "posts/crear_post.html", {"categorias": categorias})
-
-# def lista_posts(request):
-
-    # posts = Post.objects.all().order_by('-publicado')
-    # return render(request, 'posts/lista_posts.html', {'posts': posts})
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -134,4 +103,31 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'posts/eliminar_post.html'
     success_url = reverse_lazy('apps.posts:posts')
 
+class CometarioUpdateView(LoginRequiredMixin, UpdateView):
+    model = Comentario
+    form_class = ComentarioForm
+    template_name = 'comentarios/comentario_form.html'
+    
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+        else:
+            return reverse_lazy('apps.posts:post_individual', args=[self.object.posts_id])
 
+class ComentarioDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comentario
+    template_name = 'comentarios/comentario_confirm_delete.html'
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        return reverse_lazy('apps.posts:post_individual', args=[self.object.posts_id])
+    
+class PostPorCategoriaListView(ListView):
+    model = Post
+    template_name = 'posts/post_por_categoria.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        categoria_id = self.kwargs['categoria_id']
+        return Post.objects.filter(categoria_id=self.kwargs['pk'])
