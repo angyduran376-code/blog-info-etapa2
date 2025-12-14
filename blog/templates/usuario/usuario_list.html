@@ -1,0 +1,24 @@
+{% extends 'base.html' %}   
+
+{% load static %}
+
+
+
+{% block contenido %}
+<center>
+<div class ="container-fluid" style="margin: 200px;">
+    <h1>Usuarios: {{ usuario_nombre }}</h1>
+    <br>
+    <ul>
+    {% for usuario in usuarios %}
+        <li>{{ usuario.username }}</li>
+        (<a style="color:black"
+            href="{% url 'apps.usuario:usuario_delete' pk=usuario.pk %}">Eliminar</a>)
+    {% empty %}
+        <li>No hay usuarios disponibles.</li>
+    {% endfor %}
+    </ul>
+    
+</div>
+</center>
+{%endblock%}

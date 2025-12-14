@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<center>
+<div class="conteiner-fluid"style="margin: 300px;">
+    <h1>Posts por categoría</h1>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a style="color: black;" href="{% url 'apps.posts:post_individual' id=post.id %}">{{ post.titulo }}</a>
+            </li>
+        {% empty %}
+            <li>No hay posts en esta categoría.</li>
+        {% endfor %}
+    </ul>
+
+
+</center>
+{% endblock%}

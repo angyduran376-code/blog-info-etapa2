@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView, DeleteView, UpdateView
 from .forms import ComentarioForm, CrearPostForm, NuevaCategoriaForm
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 # Create your views here.
 
@@ -96,4 +96,31 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('apps.posts:posts')
 
 
+class CometarioUpdateView(LoginRequiredMixin, UpdateView):
+    model = Comentario
+    form_class = ComentarioForm
+    template_name = 'comentarios/comentario_form.html'
+    
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+        else:
+            return reverse('apps.posts:post_individual', args=[self.object.posts_id])
 
+class ComentarioDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comentario
+    template_name = 'comentarios/comentario_confirm_delete.html'
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        return reverse('apps.posts:post_individual', args=[self.object.posts_id])
+    
+class PostPorCategoriaListView(ListView):
+    model = Post
+    template_name = 'posts/post_por_categoria.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        categoria_id = self.kwargs['categoria_id']
+        return Post.objects.filter(categoria_id=self.kwargs['pk'])

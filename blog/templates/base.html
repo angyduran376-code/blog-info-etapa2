@@ -26,42 +26,39 @@
         <header>
 
             <!-- place navbar here -->
-            
-             <a class= "flex-sm-fill tex-sm-center nav-link active" href="#">
-                <img src="{% static 'img/info.png' %}" style="max-width: 500px; margin: 30px auto; display: block;">
-             </a>
-            <navbar class="nav nav-pill flex-column flex-sm-row">
-                <div>
-                    <p align="center" >
-                    <ul class ="nav-links">
-                        <li><a href ="{% url 'index' %}"> Inicio </a></li>
-                        <li><a href ="#"></a> Acerca de Nosotros </a></li>
-                        <li><a href ="{% url 'apps.posts:posts' %}"> Posts </a></li>
-                        <li><a href ="{% url 'apps.contacto:contacto' %}"> Contacto </a></li>
-                        {%if user.is_authenticated %}
-                        <li><a href ="{% url 'apps.usuario:logout' %}"> {{user.username}}: Logout </a></li>
-                        <div class="dropdown-content">
-                            <table>
-                                <tr>
-                                    {%if user.is_superuser or request.user|has_group:"colaborador"%}
-                                    <td><a href="{% url 'apps.usuario:usuario_list' %}">Lista de usuarios</a></td>
-                                    {% endif %}
-                                </tr>
-                                <tr>
-                                    <td><a href="#">Lista de Categorías</a></td> 
-                                </tr>
-                                <tr>
-                                    <td><a href="#">Lista de Posts</a></td> 
-                                </tr>
-
-                        </div>
-                        {% else %}              
-                        <li><a href ="{% url 'apps.usuario:login' %}"> Login </a></li>
-                        {% endif %}
-                    </ul>
-                    </p>
+            <nav>
+                <div class="nav-content">
+                    <div class="logo">
+                        <img src="{% static 'img/info.png' %}" id="menu_toggle" style="max-width: 300px; margin: 30px;">
+                    </div>
+                        <ul class="nav-links">
+                            <li><a href ="{% url 'index' %}"> Inicio </a></li>
+                            <li><a href ="#"></a> Acerca de Nosotros </a></li>
+                            <li><a href ="{% url 'apps.posts:posts' %}"> Posts </a></li>
+                            <li><a href ="{% url 'apps.contacto:contacto' %}"> Contacto </a></li>
+                            <div class="dropdown">
+                                {%if user.is_authenticated %}
+                                    <li><a href ="{% url 'apps.usuario:logout' %}"> {{user.username}}: Logout </a></li>
+                                {% else %}              
+                                    <li><a href ="{% url 'apps.usuario:login' %}"> Login </a></li>
+                                {% endif %}
+                                 <br>
+                                <div class="dropdown-center">
+                                    <table>
+                                        <tr>
+                                            {%if user.is_superuser or request.user|has_group:"colaborador"%}
+                                                <li><a href="{% url 'apps.usuario:usuario_list' %}">Lista de usuarios</a></li>
+                                                <li><a href="{% url 'apps.posts:categoria_list' %}">Lista de Categorías</a></li>
+                                               
+                                            {% endif %}
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </ul>
+                            
                 </div>
-            </navbar>
+            </nav>
         </header>
         <main>
             {% block contenido %}
