@@ -38,7 +38,7 @@ EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'proyecto.blog.informatorio@gmail.com'
 EMAIL_HOST_PASSWORD = 'Informatorio123'
 
-SITE_NAME = 'Arroz con Pollo'
+SITE_NAME = 'Blog Informatorio'
 
 # Application definition
 
