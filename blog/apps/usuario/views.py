@@ -4,7 +4,7 @@ from django.views.generic import CreateView
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse
-
+from django.contrib.auth.models import Group
 
 # Create your views here.
 class RegistrarUsuario(CreateView):
@@ -12,7 +12,10 @@ class RegistrarUsuario(CreateView):
     template_name = 'registration/registrar.html'
 
     def form_valid(self, form):
-        messages.success(self.request, "Usuario registrado exitosamente.")
+        response = super().form_valid(form)
+        messages.success(self.request, "Usuario registrado exitosamente. Por favor Inicie sesión.")
+        group=Group.objects.get(name='Registrado')
+        self.object.groups.add(group)
         form.save()
         return redirect('apps.usuario:registrar')
 

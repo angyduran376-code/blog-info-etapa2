@@ -2,8 +2,20 @@
 
 {% load static %}
 
+{% load colaborador_tags %}
+
 {% block contenido %}
 <div class ="container-fluid" style="margin: 200px;">
+
+{% if user.is_superuser or request.user|has_group:"Colaborador" %}
+
+    <div class="container-fluid" style="margin-top: 300px;">    
+        <a id="boton__post" href="{% url 'apps.posts:crear_post' %}">Crear Nuevo Post</a>
+    </div>
+{% endif %}
+
+
+
     {% for i in posts %}
         <br>
         <li>{{ i.titulo }}</li>
