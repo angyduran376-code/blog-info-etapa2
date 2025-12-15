@@ -5,15 +5,16 @@ class ComentarioForm(forms.ModelForm):
     class Meta:
         model = Comentario
         fields = ['texto']
-
-# class CrearPostForm(forms.ModelForm):
-#     class Meta:
-#         model = Post
-#         fields = '__all__'
-#         widgets = {
-#             'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Título del post'}),
-#             'contenido': forms.Textarea(attrs={'class': 'form-control', 'rows': 10, 'placeholder': 'Contenido del post...'}),
-#         }
+        widgets = {
+            'texto': forms.Textarea(attrs={
+                'class': 'form-control comentario-textarea',
+                'rows': 6,
+                'placeholder': 'Editá tu comentario...'
+            })
+        }
+        labels = {
+            'texto': ''
+        }
 
 class CrearPostForm(forms.ModelForm):
     class Meta:

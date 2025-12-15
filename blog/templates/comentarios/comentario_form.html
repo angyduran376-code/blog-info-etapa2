@@ -1,23 +1,40 @@
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 
 {% load static %}
 
 {% block contenido %}
-<center>
-    {%if user.is_authenticated or comentario.usuario == user %}
-    <div class="container-fluid" style="margin: 300px">
-        <h1>Editar Comentario</h1>
-        <form method="POST" style="margin-bottom: 10px; margin-top: 100px;">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" class="btn btn-primary" value="Guardar Cambios">
-            <a class="btn btn-secondary" href="javascript:history.back()">Cancelar</a>
-        </form>
-    </div>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    
+    {% if user.is_authenticated and comentario.usuario == user %}
+        <div class="p-4" style="max-width: 600px; width: 100%;">
+            
+            <h3 class="text-center mb-4">Editar comentario</h3>
+
+            <form method="POST">
+                {% csrf_token %}
+                
+                {{ form.texto }}
+
+                <div class="d-flex justify-content-end gap-3 mt-4">
+                    <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        Guardar cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+
     {% else %}
-     <div class="container-fluid" style="margin: 300px">
-        <h1>Solo los usuarios con permisos pueden acceder a esta página</h1>
-    </div>
+        <div class="alert alert-danger text-center">
+            <h4 class="mb-0">
+                No tenés permisos para acceder a esta página
+            </h4>
+        </div>
     {% endif %}
-</center>
-{%endblock contenido%}
+
+</div>
+
+{% endblock contenido %}

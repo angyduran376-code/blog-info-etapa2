@@ -2090,3 +2090,8 @@ section,
   color: color-mix(in srgb, var(--default-color), transparent 30%);
   margin: 10px 0 0 0;
 }
+
+.comentario-textarea {
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
+}
