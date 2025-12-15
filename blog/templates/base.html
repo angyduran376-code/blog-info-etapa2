@@ -53,19 +53,14 @@
           <li><a href="{% url 'index' %}" class="active">Inicio</a></li>
           <li><a href="{% url 'about' %}">Acerca de nosotros</a></li>
           <li><a href="{% url 'apps.posts:posts' %}">Posteos</a></li>
-          <li class="dropdown"><a href="#"><span>Categorias</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Category 2</a></li>
-              <li><a href="#">Category 3</a></li>
-              <li><a href="#">Category 4</a></li>
-            </ul>
+          <li><a href="{% url 'apps.categoria:categoria_list' %}">Categorias</a>
           </li>
           <li><a href="{% url 'apps.contacto:contacto' %}">Contacto</a></li>
           {% if user.is_authenticated %}
           <li>
             <form method="post" action="{% url 'apps.usuario:logout' %}" style="display:inline;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-link" style="padding:0; text-decoration:none;">
+                <button type="submit" class="nav-link btn btn-link p-0 border-0">
                     Logout
                 </button>
             </form>

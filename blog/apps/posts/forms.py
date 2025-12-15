@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comentario, Post, Categoria
+from .models import Comentario, Post
 
 class ComentarioForm(forms.ModelForm):
     class Meta:
@@ -46,11 +46,3 @@ class CrearPostForm(forms.ModelForm):
             }),
         }
 
-class NuevaCategoriaForm(forms.ModelForm):
-    class Meta:
-        model = Categoria
-        fields = '__all__'
-        widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre de la categoría'}),
-            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Descripción de la categoría...'}),
-        }

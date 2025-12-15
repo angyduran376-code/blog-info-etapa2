@@ -14,7 +14,7 @@ class RegistroUsuarioForm(UserCreationForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label='Nombre de Usuario')
+    username = forms.CharField(label='Usuario')
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
     
     def login(self, request):

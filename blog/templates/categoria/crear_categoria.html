@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block contenido %}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+
+    <div class="p-4" style="max-width: 500px; width: 100%;">
+        
+        <h3 class="text-center mb-4">Crear nueva categoría</h3>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            {{ form.as_p }}
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+                <a href="{% url 'apps.categoria:categoria_list' %}"
+                   class="btn btn-outline-secondary">
+                    Volver
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    Agregar
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock contenido %}
