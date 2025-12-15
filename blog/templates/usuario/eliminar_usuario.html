@@ -7,15 +7,15 @@
     {% if user.is_superuser or request.user|has_group:"Colaborador" %}
     <div class="container-fluid" style="margin:400px;">
         <h1>Eliminar Usuario</h1><br>
-        <p>¿Estás seguro de que deseas eliminar usuario?</p>
-        <form method="POST">
+        <p>¿Estás seguro de que deseas eliminar usuario "{{ object.username }}"?</p>
+        <form method="post">
             {% csrf_token %}
             <label for="eliminar_comentarios">¿Deseas eliminar comentarios del Usuario?</label>
-            <input type="checkbox" id="eliminar_comentarios" name="eliminar_comentario">
+            <input type="checkbox" name="eliminar_comentarios" id="eliminar_comentarios">
             <br><br>
             {% if es_colaborador %}
-                <label for="eliminar_post">¿Deseas eliminar los posts del Usuario?</label>
-                <input type="checkbox" id="eliminar_post" name="eliminar_post">
+                <label for="eliminar_posts">¿Deseas eliminar los posts del Usuario?</label>
+                <input type="checkbox" id="eliminar_posts" name="eliminar_posts">
                 <br><br>
             {% endif %}
 

@@ -16,6 +16,20 @@ class PostListView(ListView):
     model = Post
     template_name = 'posts/posts.html'
     context_object_name = 'posts'
+    def get_queryset(self):
+        queryset= super().get_queryset()
+        orden = self.request.GET.get('orden')
+        if orden == 'reciente':
+            queryset = queryset.order_by('-fecha')
+        elif orden == 'antiguo':
+            queryset = queryset.order_by('fecha')
+        elif orden == 'alfabetico':
+            queryset = queryset.order_by('titulo')
+        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['orden'] = self.request.GET.get('orden', 'reciente')
+        return context
 
 class PostDetailView(DetailView):
     model = Post
@@ -89,17 +103,15 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'posts/modificar_post.html'
     success_url = reverse_lazy('apps.posts:posts')
 
-
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'posts/eliminar_post.html'
     success_url = reverse_lazy('apps.posts:posts')
 
-
 class CometarioUpdateView(LoginRequiredMixin, UpdateView):
     model = Comentario
     form_class = ComentarioForm
-    template_name = 'comentarios/comentario_form.html'
+    template_name = 'comentario/comentario_form.html'
     
     def get_success_url(self):
         next_url = self.request.GET.get('next')

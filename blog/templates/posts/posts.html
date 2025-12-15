@@ -14,7 +14,14 @@
     </div>
 {% endif %}
 
-
+<h2>Ordenar por:</h2>
+<form method="get">
+    <select name="orden" onchange="this.form.submit()">
+        <option value="reciente" {% if orden == 'reciente' %}selected{% endif %}>Más recientes</option>
+        <option value="antiguo" {% if orden == 'antiguo' %}selected{% endif %}>Más antiguos</option>
+        <option value="alfabetico" {% if orden == 'alfabetico' %}selected{% endif %}>Alfabéticamente</option>
+    </select>
+</form>
 
     {% for i in posts %}
         <br>

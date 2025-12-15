@@ -48,7 +48,6 @@ class UsuarioListView(LoginRequiredMixin, ListView):
         queryset = queryset.exclude(is_superuser=True)
         return queryset
 
-
 class UsuarioDetailView(LoginRequiredMixin, DetailView):
     model = Usuario
     template_name = 'usuario/eliminar_usuario.html'
@@ -82,25 +81,21 @@ class UsuarioDeleteView(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         colaborador_group = Group.objects.get(name='Colaborador')
-        context['es_colaborador'] = colaborador_group in self.object.groups.all()
+        es_colaborador = colaborador_group in self.object.groups.all()
+        context['es_colaborador'] = es_colaborador 
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        eliminar_comentarios = request.POST.get('eliminar_comentario')
-        eliminar_post = request.POST.get('eliminar_post')
+        eliminar_comentarios = request.POST.get('eliminar_comentarios', False)
+        eliminar_post = request.POST.get('eliminar_posts', False)
         
         if eliminar_comentarios:
             Comentario.objects.filter(usuario=self.object).delete()
         
         if eliminar_post:
             Post.objects.filter(autor=self.object).delete()
+                
+        messages.success(request,f'Usuario {self.object.username} y sus datos eliminados exitosamente.')
         
-        self.object.delete()
-        
-        messages.success(
-            request,
-            f'Usuario {self.object.username} y sus datos eliminados exitosamente.'
-        )
-
-        return redirect(self.success_url)
+        return self.delete(request, *args, **kwargs)
