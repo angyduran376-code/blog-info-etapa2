@@ -1,5 +1,17 @@
+# Entornos virtuales
+entorno/
+venv/
+.env/
+.venv/
+
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Django
+db.sqlite3
+
+# Otros
 .env
-venv/
-entorno/
